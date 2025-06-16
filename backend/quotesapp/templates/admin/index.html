@@ -1,0 +1,169 @@
+{% extends "admin/index.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chart-container {
+        width: 100%;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .chart-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    .chart-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .chart-box {
+        flex: 1;
+        min-width: 300px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="chart-container">
+    <h2 class="chart-title">{% trans "名言数据统计" %}</h2>
+    <div class="chart-wrapper">
+        <div class="chart-box">
+            <canvas id="authorQuotesChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="categoryQuotesChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <canvas id="sourceQuotesChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 作者名言数量分布图
+        fetch('{% url "admin:author_quotes_chart_data" %}')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('authorQuotesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: '{% trans "作者名言数量分布" %}',
+                            data: data.data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '{% trans "作者数量" %}'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '{% trans "名言数量范围" %}'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        
+        // 类别名言数量分布图
+        fetch('{% url "admin:category_quotes_chart_data" %}')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('categoryQuotesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: '{% trans "类别名言数量分布" %}',
+                            data: data.data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '{% trans "类别数量" %}'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '{% trans "名言数量范围" %}'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        
+        // 来源名言数量分布图
+        fetch('{% url "admin:source_quotes_chart_data" %}')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('sourceQuotesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: '{% trans "来源名言数量分布" %}',
+                            data: data.data,
+                            backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '{% trans "来源数量" %}'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '{% trans "名言数量范围" %}'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    });
+</script>
+{% endblock %}

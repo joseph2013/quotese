@@ -1,0 +1,18 @@
+# robots.txt for quotese.com
+User-agent: *
+Allow: /
+Allow: /categories/
+Allow: /authors/
+Allow: /sources/
+Allow: /quote/
+Allow: /static/
+
+# 不允许爬取的目录
+Disallow: /admin/
+Disallow: /api-test.html
+Disallow: /test.html
+Disallow: /test-all-pages.html
+Disallow: /simple-api-test.html
+
+# 网站地图
+Sitemap: https://quotese.com/sitemap.xml

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名言数据库 GraphQL API 示例</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .query-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .tab.active {
+            border: 1px solid #ddd;
+            border-bottom: 1px solid white;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>名言数据库 GraphQL API 示例</h1>
+    <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+        <p><strong>版本：</strong> v1.2.0</p>
+        <p><strong>更新日期：</strong> 2025年4月20日</p>
+        <p><strong>新增功能：</strong></p>
+        <ul>
+            <li>添加了JWT认证机制，所有变更操作都需要认证</li>
+            <li>添加了用户管理API（注册、登录、刷新令牌、登出）</li>
+            <li>添加了基于名称的筛选参数（author、category、source、content）</li>
+            <li>添加了语言标识和筛选功能（language）</li>
+            <li>增强了全文搜索功能</li>
+        </ul>
+    </div>
+    <p>这个页面展示了如何使用GraphQL API查询和修改名言数据库中的数据。</p>
+
+    <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+        <p><strong>注意：</strong> 所有变更操作（创建、更新、删除）都需要JWT认证。请先使用 <code>/auth/register/</code> 注册用户，然后使用 <code>/auth/login/</code> 获取令牌。查询操作不需要认证。</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="query">查询示例</div>
+        <div class="tab" data-tab="mutation">变更示例</div>
+        <div class="tab" data-tab="docs">API文档</div>
+        <div class="tab" data-tab="auth">认证</div>
+    </div>
+
+    <div class="tab-content active" id="query">
+        <h2>查询示例</h2>
+        <div class="container">
+            <div class="query-section">
+                <h3>GraphQL查询</h3>
+                <textarea id="query-input">query {
+  quotes(first: 5) {
+    id
+    content
+    author {
+      id
+      name
+    }
+    categories {
+      name
+    }
+    sources {
+      name
+    }
+  }
+}</textarea>
+                <button id="run-query">运行查询</button>
+            </div>
+            <div class="result-section">
+                <h3>查询结果</h3>
+                <pre><code id="query-result">// 查询结果将显示在这里</code></pre>
+            </div>
+        </div>
+
+        <h3>预设查询</h3>
+        <button class="preset-query" data-query="query {
+  quotes(first: 5) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}">获取5条名言</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(search: &quot;future&quot;) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}">全文搜索"future"</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(content: &quot;present&quot;) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}">按内容搜索"present"</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(author: &quot;Taleb&quot;) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}">按作者名称搜索"Taleb"</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(first: 3) {
+    id
+    content
+    author {
+      name
+    }
+    categories {
+      name
+    }
+  }
+}">获取3条名言及类别</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(first: 3) {
+    id
+    content
+    author {
+      name
+    }
+    sources {
+      name
+    }
+  }
+}">获取3条名言及来源</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(language: &quot;en&quot;) {
+    id
+    content
+    author {
+      name
+    }
+    language
+  }
+}">按语言筛选(英文)</button>
+
+        <button class="preset-query" data-query="query {
+  authors(first: 10) {
+    id
+    name
+  }
+}">获取作者列表</button>
+
+        <button class="preset-query" data-query="query {
+  authorsCount
+  categoriesCount
+  sourcesCount
+  quotesCount
+}">获取统计信息</button>
+    </div>
+
+    <div class="tab-content" id="mutation">
+        <h2>变更示例</h2>
+        <div class="container">
+            <div class="query-section">
+                <h3>GraphQL变更</h3>
+                <textarea id="mutation-input">mutation {
+  createAuthor(input: {
+    name: "新作者"
+  }) {
+    author {
+      id
+      name
+    }
+  }
+}</textarea>
+                <button id="run-mutation">运行变更</button>
+            </div>
+            <div class="result-section">
+                <h3>变更结果</h3>
+                <pre><code id="mutation-result">// 变更结果将显示在这里</code></pre>
+            </div>
+        </div>
+
+        <h3>预设变更</h3>
+        <button class="preset-mutation" data-mutation="mutation {
+  createAuthor(input: {
+    name: &quot;新作者&quot;
+  }) {
+    author {
+      id
+      name
+    }
+  }
+}">创建作者</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createQuote(input: {
+    content: &quot;这是一条新的名言。&quot;
+    authorId: 1
+    categoryIds: [1]
+    sourceIds: [1]
+    language: &quot;zh&quot;
+  }) {
+    quote {
+      id
+      content
+      author {
+        name
+      }
+      language
+    }
+  }
+}">创建中文名言</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createQuote(input: {
+    content: &quot;This is a new quote.&quot;
+    authorId: 1
+    categoryIds: [1]
+    sourceIds: [1]
+    language: &quot;en&quot;
+  }) {
+    quote {
+      id
+      content
+      author {
+        name
+      }
+      language
+    }
+  }
+}">创建英文名言</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createCategory(input: {
+    name: &quot;新类别&quot;
+  }) {
+    category {
+      id
+      name
+    }
+  }
+}">创建类别</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createSource(input: {
+    name: &quot;新来源&quot;
+  }) {
+    source {
+      id
+      name
+    }
+  }
+}">创建来源</button>
+    </div>
+
+    <div class="tab-content" id="docs">
+        <h2>API文档</h2>
+        <p>请访问 <a href="/graphql/" target="_blank">GraphiQL界面</a> 查看完整的API文档和进行交互式查询。或者访问 <a href="/api-docs/" target="_blank">详细API文档</a>。</p>
+
+        <h3>常用查询</h3>
+        <pre><code>query {
+  quotes(
+    # 基本筛选
+    search: "关键词",    # 可选，全文搜索（内容、作者、类别、来源）
+    content: "智慧",     # 可选，按名言内容筛选
+
+    # 基于名称的筛选（用户友好）
+    author: "爱因斯坦",    # 可选，按作者名称筛选
+    category: "哲学",     # 可选，按类别名称筛选
+    source: "书籍",       # 可选，按来源名称筛选
+
+    # 基于ID的筛选（系统内部）
+    authorId: 1,        # 可选，按作者ID筛选
+    categoryId: 2,      # 可选，按类别ID筛选
+    sourceId: 3,        # 可选，按来源ID筛选
+
+    # 语言筛选
+    language: "en",     # 可选，按语言筛选（如 'en', 'zh'）
+
+    # 分页
+    first: 10,          # 可选，返回结果数量
+    skip: 0             # 可选，跳过结果数量（用于分页）
+  ) {
+    id
+    content
+    author {
+      id
+      name
+    }
+    categories {
+      id
+      name
+    }
+    sources {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+        <h3>常用变更</h3>
+        <pre><code>mutation {
+  createQuote(input: {
+    content: "名言内容",
+    authorId: 1,              # 可选
+    categoryIds: [1, 2],      # 可选
+    sourceIds: [3],           # 可选
+    language: "en"            # 可选，语言（'en'或'zh'），默认为'en'
+  }) {
+    quote {
+      id
+      content
+      language
+    }
+  }
+}</code></pre>
+
+        <h3>筛选参数说明</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+                <th>参数</th>
+                <th>类型</th>
+                <th>说明</th>
+            </tr>
+            <tr>
+                <td>search</td>
+                <td>String</td>
+                <td>全文搜索（内容、作者、类别、来源）</td>
+            </tr>
+            <tr>
+                <td>content</td>
+                <td>String</td>
+                <td>按名言内容筛选</td>
+            </tr>
+            <tr>
+                <td>author</td>
+                <td>String</td>
+                <td>按作者名称筛选（用户友好）</td>
+            </tr>
+            <tr>
+                <td>category</td>
+                <td>String</td>
+                <td>按类别名称筛选（用户友好）</td>
+            </tr>
+            <tr>
+                <td>source</td>
+                <td>String</td>
+                <td>按来源名称筛选（用户友好）</td>
+            </tr>
+            <tr>
+                <td>language</td>
+                <td>String</td>
+                <td>按语言筛选（如 'en', 'zh'），当前所有数据都是英文</td>
+            </tr>
+            <tr>
+                <td>authorId</td>
+                <td>ID</td>
+                <td>按作者ID筛选（系统内部）</td>
+            </tr>
+            <tr>
+                <td>categoryId</td>
+                <td>ID</td>
+                <td>按类别ID筛选（系统内部）</td>
+            </tr>
+            <tr>
+                <td>sourceId</td>
+                <td>ID</td>
+                <td>按来源ID筛选（系统内部）</td>
+            </tr>
+            <tr>
+                <td>first</td>
+                <td>Int</td>
+                <td>返回结果数量（用于分页）</td>
+            </tr>
+            <tr>
+                <td>skip</td>
+                <td>Int</td>
+                <td>跳过结果数量（用于分页）</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="tab-content" id="auth">
+        <h2>认证</h2>
+        <p>API使用JWT（JSON Web Token）进行认证。查询操作不需要认证，但所有变更操作（创建、更新、删除）都需要认证。</p>
+
+        <div id="auth-status" style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <p><strong>当前状态：</strong> <span id="auth-status-text">未登录</span></p>
+        </div>
+
+        <div id="login-form" style="margin-bottom: 20px;">
+            <h3>用户登录</h3>
+            <div style="margin-bottom: 10px;">
+                <label for="username">用户名：</label>
+                <input type="text" id="username" style="padding: 5px; width: 200px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="password">密码：</label>
+                <input type="password" id="password" style="padding: 5px; width: 200px;">
+            </div>
+            <button id="login-button" style="padding: 5px 10px;">登录</button>
+            <button id="register-button" style="padding: 5px 10px; margin-left: 10px;">注册</button>
+            <button id="logout-button" style="padding: 5px 10px; margin-left: 10px; display: none;">登出</button>
+        </div>
+
+        <h3>认证流程</h3>
+        <ol>
+            <li>用户注册：使用 <code>/auth/register/</code> 端点创建新用户</li>
+            <li>用户登录：使用 <code>/auth/login/</code> 端点获取访问令牌（access token）和刷新令牌（refresh token）</li>
+            <li>使用访问令牌：在请求头中添加 <code>Authorization: Bearer &lt;access_token&gt;</code></li>
+            <li>刷新令牌：当访问令牌过期时，使用 <code>/auth/login/refresh/</code> 端点获取新的访问令牌</li>
+            <li>用户登出：使用 <code>/auth/logout/</code> 端点使当前令牌无效</li>
+        </ol>
+
+        <h3>用户注册</h3>
+        <pre><code>POST /auth/register/
+Content-Type: application/json
+
+{
+  "username": "example_user",
+  "email": "user@example.com",
+  "password": "secure_password",
+  "password2": "secure_password",
+  "first_name": "John",
+  "last_name": "Doe"
+}</code></pre>
+
+        <h3>用户登录</h3>
+        <pre><code>POST /auth/login/
+Content-Type: application/json
+
+{
+  "username": "example_user",
+  "password": "secure_password"
+}</code></pre>
+
+        <p>响应：</p>
+        <pre><code>{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+
+        <h3>刷新令牌</h3>
+        <pre><code>POST /auth/login/refresh/
+Content-Type: application/json
+
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+
+        <h3>用户登出</h3>
+        <pre><code>POST /auth/logout/
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+
+{
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+
+        <h3>在GraphQL请求中使用认证</h3>
+        <pre><code>POST /api/
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+
+{
+  "query": "mutation { createAuthor(input: { name: \"New Author\" }) { author { id name } } }"
+}</code></pre>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查用户登录状态
+            checkAuthStatus();
+
+            // 登录按钮点击事件
+            document.getElementById('login-button').addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                if (!username || !password) {
+                    alert('用户名和密码不能为空！');
+                    return;
+                }
+
+                login(username, password);
+            });
+
+            // 注册按钮点击事件
+            document.getElementById('register-button').addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                if (!username || !password) {
+                    alert('用户名和密码不能为空！');
+                    return;
+                }
+
+                register(username, password);
+            });
+
+            // 登出按钮点击事件
+            document.getElementById('logout-button').addEventListener('click', function() {
+                logout();
+            });
+
+            // 检查用户登录状态
+            function checkAuthStatus() {
+                const accessToken = localStorage.getItem('access_token');
+                const username = localStorage.getItem('username');
+
+                if (accessToken && username) {
+                    document.getElementById('auth-status-text').textContent = '已登录为 ' + username;
+                    document.getElementById('auth-status').style.backgroundColor = '#d4edda';
+                    document.getElementById('login-button').style.display = 'none';
+                    document.getElementById('register-button').style.display = 'none';
+                    document.getElementById('logout-button').style.display = 'inline-block';
+                } else {
+                    document.getElementById('auth-status-text').textContent = '未登录';
+                    document.getElementById('auth-status').style.backgroundColor = '#f8f9fa';
+                    document.getElementById('login-button').style.display = 'inline-block';
+                    document.getElementById('register-button').style.display = 'inline-block';
+                    document.getElementById('logout-button').style.display = 'none';
+                }
+            }
+
+            // 用户登录
+            function login(username, password) {
+                fetch('/auth/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('登录失败！');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    localStorage.setItem('access_token', data.access);
+                    localStorage.setItem('refresh_token', data.refresh);
+                    localStorage.setItem('username', username);
+
+                    alert('登录成功！');
+                    checkAuthStatus();
+                })
+                .catch(error => {
+                    alert('登录失败：' + error.message);
+                });
+            }
+
+            // 用户注册
+            function register(username, password) {
+                fetch('/auth/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        password2: password,
+                        email: username + '@example.com'
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('注册失败！');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('注册成功！请登录。');
+                    login(username, password);
+                })
+                .catch(error => {
+                    alert('注册失败：' + error.message);
+                });
+            }
+
+            // 用户登出
+            function logout() {
+                const refreshToken = localStorage.getItem('refresh_token');
+                const accessToken = localStorage.getItem('access_token');
+
+                if (refreshToken && accessToken) {
+                    fetch('/auth/logout/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + accessToken
+                        },
+                        body: JSON.stringify({
+                            refresh_token: refreshToken
+                        })
+                    })
+                    .then(response => {
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('refresh_token');
+                        localStorage.removeItem('username');
+
+                        alert('登出成功！');
+                        checkAuthStatus();
+                    })
+                    .catch(error => {
+                        alert('登出失败：' + error.message);
+                    });
+                } else {
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    localStorage.removeItem('username');
+
+                    checkAuthStatus();
+                }
+            }
+            // 标签切换
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有活动标签
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前活动标签
+                    this.classList.add('active');
+
+                    // 隐藏所有内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // 显示当前内容
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // 运行查询
+            document.getElementById('run-query').addEventListener('click', function() {
+                const query = document.getElementById('query-input').value;
+                runGraphQLQuery(query, 'query-result');
+            });
+
+            // 运行变更
+            document.getElementById('run-mutation').addEventListener('click', function() {
+                const mutation = document.getElementById('mutation-input').value;
+                runGraphQLQuery(mutation, 'mutation-result');
+            });
+
+            // 预设查询
+            document.querySelectorAll('.preset-query').forEach(button => {
+                button.addEventListener('click', function() {
+                    const query = this.getAttribute('data-query');
+                    document.getElementById('query-input').value = query;
+                    runGraphQLQuery(query, 'query-result');
+                });
+            });
+
+            // 预设变更
+            document.querySelectorAll('.preset-mutation').forEach(button => {
+                button.addEventListener('click', function() {
+                    const mutation = this.getAttribute('data-mutation');
+                    document.getElementById('mutation-input').value = mutation;
+                    runGraphQLQuery(mutation, 'mutation-result');
+                });
+            });
+
+            // 运行GraphQL查询
+            function runGraphQLQuery(query, resultElementId) {
+                // 获取访问令牌（如果有）
+                const accessToken = localStorage.getItem('access_token');
+
+                // 准备请求头
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                };
+
+                // 如果有访问令牌，添加到请求头
+                if (accessToken) {
+                    headers['Authorization'] = `Bearer ${accessToken}`;
+                }
+
+                fetch('/api/', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ query })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    document.getElementById(resultElementId).textContent = JSON.stringify(result, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById(resultElementId).textContent = 'Error: ' + error.message;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

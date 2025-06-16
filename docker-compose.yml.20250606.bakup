@@ -1,0 +1,63 @@
+#version: '3'
+
+   services:
+     # 数据库服务
+     db:
+       image: mysql:8.0
+       restart: always
+       environment:
+         MYSQL_DATABASE: quotes_db
+         MYSQL_USER: quotes_user
+         MYSQL_PASSWORD: lixiaohua_2025  # 请修改为强密码
+         MYSQL_ROOT_PASSWORD: lixiaohua_2025  # 请修改为强密码
+       volumes:
+         - mysql_data:/var/lib/mysql
+       command: --character-set-server=utf8mb4 --max_allowed_packet=512M --innodb_buffer_pool_size=2G --innodb_log_buffer_size=256M --innodb_redo_log_capacity=1G --innodb_flush_log_at_trx_commit=0 --collation-server=utf8mb4_unicode_ci --bind-address=0.0.0.0
+       stdin_open: true
+       tty: true
+         #networks:
+         #- app-network
+
+     # 后端API服务
+     backend:
+       build:
+         context: ./backend
+         dockerfile: Dockerfile
+       command: sh -c 'python manage.py runserver 0.0.0.0:8000'
+       restart: always
+       depends_on:
+         - db
+       environment:
+         - DATABASE_HOST=db
+         - DATABASE_NAME=quotes_db
+         - DATABASE_USER=quotes_user
+         - DATABASE_PASSWORD=lixiaohua_2025  # 与上面设置的相同
+         - DJANGO_SETTINGS_MODULE=quotes_admin.settings_prod
+         - ALLOWED_HOSTS=api.quotese.com,localhost,127.0.0.1,115.190.9.109,43.153.11.77
+       volumes:
+         - static_data:/app/static
+       ports:
+         - "8000:8000"
+           #networks: 
+           #- app-network
+
+     # 前端Web服务
+     frontend:
+       image: nginx:alpine
+       restart: always
+       volumes:
+         - ./frontend:/usr/share/nginx/html
+         - ./config/nginx_frontend_docker.conf:/etc/nginx/conf.d/default.conf
+       ports:
+         - "80:80"
+       depends_on:
+         - backend
+           # networks: 
+           #- app-network
+
+   volumes:
+     mysql_data:
+     static_data:
+       #networks:
+       #app-network:
+       #driver: bridge

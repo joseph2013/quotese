@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名言数据库 GraphQL API 示例</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .query-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .tab.active {
+            border: 1px solid #ddd;
+            border-bottom: 1px solid white;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>名言数据库 GraphQL API 示例</h1>
+    <p>这个页面展示了如何使用GraphQL API查询和修改名言数据库中的数据。</p>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="query">查询示例</div>
+        <div class="tab" data-tab="mutation">变更示例</div>
+        <div class="tab" data-tab="docs">API文档</div>
+    </div>
+
+    <div class="tab-content active" id="query">
+        <h2>查询示例</h2>
+        <div class="container">
+            <div class="query-section">
+                <h3>GraphQL查询</h3>
+                <textarea id="query-input">query {
+  quotes(first: 5) {
+    id
+    content
+    author {
+      id
+      name
+    }
+    categories {
+      name
+    }
+    sources {
+      name
+    }
+  }
+}</textarea>
+                <button id="run-query">运行查询</button>
+            </div>
+            <div class="result-section">
+                <h3>查询结果</h3>
+                <pre><code id="query-result">// 查询结果将显示在这里</code></pre>
+            </div>
+        </div>
+
+        <h3>预设查询</h3>
+        <button class="preset-query" data-query="query {
+  quotes(first: 5) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}">获取5条名言</button>
+
+        <button class="preset-query" data-query="query {
+  quotes(search: &quot;生活&quot;) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}">搜索"生活"相关名言</button>
+
+        <button class="preset-query" data-query="query {
+  authors(first: 10) {
+    id
+    name
+  }
+}">获取作者列表</button>
+
+        <button class="preset-query" data-query="query {
+  authorsCount
+  categoriesCount
+  sourcesCount
+  quotesCount
+}">获取统计信息</button>
+    </div>
+
+    <div class="tab-content" id="mutation">
+        <h2>变更示例</h2>
+        <div class="container">
+            <div class="query-section">
+                <h3>GraphQL变更</h3>
+                <textarea id="mutation-input">mutation {
+  createAuthor(input: {
+    name: "新作者"
+  }) {
+    author {
+      id
+      name
+    }
+  }
+}</textarea>
+                <button id="run-mutation">运行变更</button>
+            </div>
+            <div class="result-section">
+                <h3>变更结果</h3>
+                <pre><code id="mutation-result">// 变更结果将显示在这里</code></pre>
+            </div>
+        </div>
+
+        <h3>预设变更</h3>
+        <button class="preset-mutation" data-mutation="mutation {
+  createAuthor(input: {
+    name: &quot;新作者&quot;
+  }) {
+    author {
+      id
+      name
+    }
+  }
+}">创建作者</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createQuote(input: {
+    content: &quot;这是一条新的名言。&quot;
+    authorId: 1
+    categoryIds: [1]
+    sourceIds: [1]
+  }) {
+    quote {
+      id
+      content
+      author {
+        name
+      }
+    }
+  }
+}">创建名言</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createCategory(input: {
+    name: &quot;新类别&quot;
+  }) {
+    category {
+      id
+      name
+    }
+  }
+}">创建类别</button>
+
+        <button class="preset-mutation" data-mutation="mutation {
+  createSource(input: {
+    name: &quot;新来源&quot;
+  }) {
+    source {
+      id
+      name
+    }
+  }
+}">创建来源</button>
+    </div>
+
+    <div class="tab-content" id="docs">
+        <h2>API文档</h2>
+        <p>请访问 <a href="/graphql/" target="_blank">GraphiQL界面</a> 查看完整的API文档和进行交互式查询。</p>
+
+        <h3>常用查询</h3>
+        <pre><code>query {
+  quotes(
+    # 基本筛选
+    search: "关键词",    # 可选，全文搜索（内容、作者、类别、来源）
+    content: "智慧",     # 可选，按名言内容筛选
+
+    # 基于名称的筛选（用户友好）
+    author: "爱因斯坦",    # 可选，按作者名称筛选
+    category: "哲学",     # 可选，按类别名称筛选
+    source: "书籍",       # 可选，按来源名称筛选
+
+    # 基于ID的筛选（系统内部）
+    authorId: 1,        # 可选，按作者ID筛选
+    categoryId: 2,      # 可选，按类别ID筛选
+    sourceId: 3,        # 可选，按来源ID筛选
+
+    # 分页
+    first: 10,          # 可选，返回结果数量
+    skip: 0             # 可选，跳过结果数量（用于分页）
+  ) {
+    id
+    content
+    author {
+      id
+      name
+    }
+    categories {
+      id
+      name
+    }
+    sources {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+        <h3>常用变更</h3>
+        <pre><code>mutation {
+  createQuote(input: {
+    content: "名言内容",
+    authorId: 1,              # 可选
+    categoryIds: [1, 2],      # 可选
+    sourceIds: [3]            # 可选
+  }) {
+    quote {
+      id
+      content
+    }
+  }
+}</code></pre>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 标签切换
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有活动标签
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 添加当前活动标签
+                    this.classList.add('active');
+
+                    // 隐藏所有内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // 显示当前内容
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // 运行查询
+            document.getElementById('run-query').addEventListener('click', function() {
+                const query = document.getElementById('query-input').value;
+                runGraphQLQuery(query, 'query-result');
+            });
+
+            // 运行变更
+            document.getElementById('run-mutation').addEventListener('click', function() {
+                const mutation = document.getElementById('mutation-input').value;
+                runGraphQLQuery(mutation, 'mutation-result');
+            });
+
+            // 预设查询
+            document.querySelectorAll('.preset-query').forEach(button => {
+                button.addEventListener('click', function() {
+                    const query = this.getAttribute('data-query');
+                    document.getElementById('query-input').value = query;
+                    runGraphQLQuery(query, 'query-result');
+                });
+            });
+
+            // 预设变更
+            document.querySelectorAll('.preset-mutation').forEach(button => {
+                button.addEventListener('click', function() {
+                    const mutation = this.getAttribute('data-mutation');
+                    document.getElementById('mutation-input').value = mutation;
+                    runGraphQLQuery(mutation, 'mutation-result');
+                });
+            });
+
+            // 运行GraphQL查询
+            function runGraphQLQuery(query, resultElementId) {
+                fetch('/api/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ query })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    document.getElementById(resultElementId).textContent = JSON.stringify(result, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById(resultElementId).textContent = 'Error: ' + error.message;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

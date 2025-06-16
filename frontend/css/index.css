@@ -1,0 +1,211 @@
+/* 首页特定样式 */
+
+/* Hero 区域样式 */
+#hero-heading {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 名言卡片特殊样式 */
+.quote-card-home {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.quote-card-home::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.quote-card-home:hover::after {
+    transform: translateY(0);
+}
+
+/* 热门类别标签云 */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-cloud .tag {
+    font-size: var(--font-size-sm);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    transition: all 0.2s ease;
+}
+
+.dark-mode .tag-cloud .tag {
+    background-color: #374151;
+    color: #d1d5db;
+}
+
+.tag-cloud .tag:hover {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+}
+
+/* 热门作者列表 */
+.author-list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+}
+
+.author-list-item:hover {
+    background-color: #f3f4f6;
+}
+
+.dark-mode .author-list-item:hover {
+    background-color: #374151;
+}
+
+.author-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
+    margin-right: 0.75rem;
+    border: 2px solid var(--primary-color);
+}
+
+/* 热门来源列表 */
+.source-list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+}
+
+.source-list-item:hover {
+    background-color: #f3f4f6;
+}
+
+.dark-mode .source-list-item:hover {
+    background-color: #374151;
+}
+
+.source-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fef3c7;
+    color: #d97706;
+    margin-right: 0.75rem;
+}
+
+.dark-mode .source-icon {
+    background-color: #78350f;
+    color: #fbbf24;
+}
+
+/* 分页控件 */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pagination-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    margin: 0 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn-active {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.pagination-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 随机名言模态框 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    max-width: 32rem;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.dark-mode .modal-content {
+    background-color: #1f2937;
+    color: white;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #111827;
+}
+
+.dark-mode .modal-close:hover {
+    color: #f3f4f6;
+}

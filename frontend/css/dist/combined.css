@@ -1,0 +1,1182 @@
+/* 颜色变量 */
+:root {
+    /* 主色调 */
+    --primary-color: #FFD300;
+    --primary-light: #FFDA33;
+    --primary-dark: #E6BE00;
+
+    /* 文本颜色 */
+    --text-primary: #333333;
+    --text-secondary: #6c757d;
+    --text-light: #f8f9fa;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+
+    /* 背景颜色 */
+    --bg-light: #FFFFFF;
+    --bg-dark: #121212;
+    --bg-light-secondary: #f8f9fa;
+    --bg-dark-secondary: #1e1e1e;
+
+    /* 灰度颜色 */
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+
+    /* 状态颜色 */
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+
+    /* 间距 */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
+
+    /* 边框圆角 */
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 1rem;
+    --border-radius-xl: 1.5rem;
+    --border-radius-full: 9999px;
+
+    /* 字体大小 */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+    --font-size-3xl: 2.5rem;
+    --font-size-4xl: 3rem;
+
+    /* 字体粗细 */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* 行高 */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    --line-height-loose: 2;
+
+    /* 阴影 */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* 过渡 */
+    --transition-fast: 150ms;
+    --transition-normal: 300ms;
+    --transition-slow: 500ms;
+
+    /* 响应式断点 */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+
+    /* 按钮样式 */
+    --btn-padding-x: 1rem;
+    --btn-padding-y: 0.5rem;
+    --btn-padding-x-sm: 0.75rem;
+    --btn-padding-y-sm: 0.375rem;
+    --btn-padding-x-lg: 1.5rem;
+    --btn-padding-y-lg: 0.75rem;
+    --btn-border-radius: 0.375rem;
+    --btn-border-radius-sm: 0.25rem;
+    --btn-border-radius-lg: 0.5rem;
+    --btn-border-width: 1px;
+    --btn-font-weight: 500;
+    --btn-transition: all 0.3s ease;
+
+    /* 卡片样式 */
+    --card-border-radius: 0.75rem;
+    --card-padding: 1.5rem;
+    --card-bg-light: white;
+    --card-bg-dark: #1f2937;
+    --card-border-color-light: #e5e7eb;
+    --card-border-color-dark: #374151;
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.1);
+    --card-transition: all 0.3s ease;
+}
+/* ======================================
+   动画效果 - 统一网站所有动画
+   ====================================== */
+
+/* 1. 淡入动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* 淡入延迟 - 统一所有页面的延迟时间 */
+.fade-in-delay-1 {
+    animation-delay: 0.2s;
+}
+
+.fade-in-delay-2 {
+    animation-delay: 0.4s;
+}
+
+.fade-in-delay-3 {
+    animation-delay: 0.6s;
+}
+
+/* 2. 脉冲动画 */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* 3. 光晕脉冲动画 */
+@keyframes pulseShadow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 211, 0, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 211, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 211, 0, 0);
+    }
+}
+
+.pulse-shadow {
+    animation: pulseShadow 2s infinite;
+}
+
+/* 4. 旋转动画 */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+/* 5. 悬停提升效果 */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 暗模式下的悬停效果 */
+.dark-mode .hover-lift:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* 6. 按钮悬停效果 */
+.btn-hover-effect {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn-hover-effect::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+    transform: translateY(100%);
+    transition: transform 0.3s;
+    z-index: -1;
+}
+
+.btn-hover-effect:hover::after {
+    transform: translateY(0);
+}
+
+/* 7. 卡片悬停效果 */
+.card-hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color) !important;
+    border-width: 2px !important;
+}
+
+.dark-mode .card-hover-effect:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* 8. 标签悬停效果 */
+.tag {
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.tag:hover {
+    transform: scale(1.05);
+}
+
+.tag::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+}
+
+.tag:hover::after {
+    transform: translateX(0);
+}
+
+.dark-mode .tag::after {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 9. 加载动画 */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 211, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+/* 10. 图片懒加载效果 */
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-color: #f0f0f0;
+    min-height: 50px;
+    position: relative;
+}
+
+.lazy.loaded {
+    opacity: 1;
+    background-color: transparent;
+}
+
+.lazy.error {
+    opacity: 0.5;
+    background-color: #f8f8f8;
+}
+
+/* 加载中动画 */
+.lazy:not(.loaded):not(.error)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255, 211, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+/* 作者图片占位符 */
+.author-image-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.author-initial {
+    font-size: 1.5rem;
+}
+
+/* 封面图片占位符 */
+.cover-image-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    color: var(--text-secondary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.cover-placeholder i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.cover-placeholder span {
+    font-size: 0.875rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 响应式图片 */
+.responsive-lazy {
+    max-width: 100%;
+    height: auto;
+}
+/* 按钮样式 */
+
+/* 基础按钮样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    font-weight: var(--btn-font-weight);
+    border-radius: var(--btn-border-radius);
+    border: var(--btn-border-width) solid transparent;
+    transition: var(--btn-transition);
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1.5;
+    font-size: var(--font-size-md);
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(255, 211, 0, 0.25);
+}
+
+.btn:disabled, .btn.disabled {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+/* 按钮尺寸 */
+.btn-sm {
+    padding: var(--btn-padding-y-sm) var(--btn-padding-x-sm);
+    font-size: var(--font-size-sm);
+    border-radius: var(--btn-border-radius-sm);
+}
+
+.btn-lg {
+    padding: var(--btn-padding-y-lg) var(--btn-padding-x-lg);
+    font-size: var(--font-size-lg);
+    border-radius: var(--btn-border-radius-lg);
+}
+
+/* 主要按钮 */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .btn-primary {
+    color: var(--text-dark);
+}
+
+/* 次要按钮 */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .btn-secondary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.dark-mode .btn-secondary:hover, .dark-mode .btn-secondary:focus {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+}
+
+/* 灰色按钮 */
+.btn-gray {
+    background-color: var(--gray-200);
+    color: var(--gray-800);
+    border-color: var(--gray-300);
+}
+
+.btn-gray:hover, .btn-gray:focus {
+    background-color: var(--gray-300);
+    border-color: var(--gray-400);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .btn-gray {
+    background-color: var(--gray-700);
+    color: var(--gray-200);
+    border-color: var(--gray-600);
+}
+
+.dark-mode .btn-gray:hover, .dark-mode .btn-gray:focus {
+    background-color: var(--gray-600);
+    border-color: var(--gray-500);
+}
+
+/* 成功按钮 */
+.btn-success {
+    background-color: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+.btn-success:hover, .btn-success:focus {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 危险按钮 */
+.btn-danger {
+    background-color: var(--danger);
+    color: white;
+    border-color: var(--danger);
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: #c82333;
+    border-color: #bd2130;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 信息按钮 */
+.btn-info {
+    background-color: var(--info);
+    color: white;
+    border-color: var(--info);
+}
+
+.btn-info:hover, .btn-info:focus {
+    background-color: #138496;
+    border-color: #117a8b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 警告按钮 */
+.btn-warning {
+    background-color: var(--warning);
+    color: var(--text-dark);
+    border-color: var(--warning);
+}
+
+.btn-warning:hover, .btn-warning:focus {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 链接按钮 */
+.btn-link {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: transparent;
+    text-decoration: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.btn-link:hover, .btn-link:focus {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    transform: none;
+    box-shadow: none;
+}
+
+.dark-mode .btn-link {
+    color: var(--primary-light);
+}
+
+.dark-mode .btn-link:hover, .dark-mode .btn-link:focus {
+    color: var(--primary-color);
+}
+
+/* 图标按钮 */
+.btn-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.btn-icon.btn-sm {
+    width: 2rem;
+    height: 2rem;
+}
+
+.btn-icon.btn-lg {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* 按钮组 */
+.btn-group {
+    display: inline-flex;
+    position: relative;
+}
+
+.btn-group .btn {
+    position: relative;
+    flex: 1 1 auto;
+}
+
+.btn-group .btn:not(:first-child) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.btn-group .btn:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* 全宽按钮 */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* 带图标的按钮 */
+.btn i, .btn svg {
+    margin-right: 0.5rem;
+}
+
+.btn.btn-icon i, .btn.btn-icon svg {
+    margin-right: 0;
+}
+
+/* 悬停效果 */
+.btn-hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.btn-hover-effect:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* 响应式样式 */
+
+/* 移动设备 (小于 640px) */
+@media (max-width: 639px) {
+    .quote-marks::before {
+        font-size: 3rem;
+        left: -5px;
+    }
+    
+    .card-container {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* 平板设备 (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+    .quote-marks::before {
+        font-size: 4rem;
+        left: -8px;
+    }
+}
+
+/* 小型笔记本 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* 大型笔记本和桌面 (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* 大型显示器 (1280px 及以上) */
+@media (min-width: 1280px) {
+    .container {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    a {
+        text-decoration: none !important;
+        color: black !important;
+    }
+    
+    .container {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .card-container {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    .quote-card-component {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        background-image: none !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+}
+/* 首页特定样式 */
+
+/* Hero 区域样式 */
+#hero-heading {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 名言卡片特殊样式 */
+.quote-card-home {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.quote-card-home::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.quote-card-home:hover::after {
+    transform: translateY(0);
+}
+
+/* 热门类别标签云 */
+.tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag-cloud .tag {
+    font-size: var(--font-size-sm);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    transition: all 0.2s ease;
+}
+
+.dark-mode .tag-cloud .tag {
+    background-color: #374151;
+    color: #d1d5db;
+}
+
+.tag-cloud .tag:hover {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+}
+
+/* 热门作者列表 */
+.author-list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+}
+
+.author-list-item:hover {
+    background-color: #f3f4f6;
+}
+
+.dark-mode .author-list-item:hover {
+    background-color: #374151;
+}
+
+.author-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
+    margin-right: 0.75rem;
+    border: 2px solid var(--primary-color);
+}
+
+/* 热门来源列表 */
+.source-list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
+}
+
+.source-list-item:hover {
+    background-color: #f3f4f6;
+}
+
+.dark-mode .source-list-item:hover {
+    background-color: #374151;
+}
+
+.source-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fef3c7;
+    color: #d97706;
+    margin-right: 0.75rem;
+}
+
+.dark-mode .source-icon {
+    background-color: #78350f;
+    color: #fbbf24;
+}
+
+/* 分页控件 */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.pagination-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    margin: 0 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn-active {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.pagination-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 随机名言模态框 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    max-width: 32rem;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.dark-mode .modal-content {
+    background-color: #1f2937;
+    color: white;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #111827;
+}
+
+.dark-mode .modal-close:hover {
+    color: #f3f4f6;
+}
+/* 基础样式 */
+body {
+    font-family: 'Noto Sans', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif', serif;
+}
+
+/* 主题模式 */
+.light-mode {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+}
+
+.dark-mode {
+    background-color: var(--bg-dark);
+    color: white;
+}
+
+/* 渐变文本 */
+.gradient-text {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.dark-mode .gradient-text {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* 按钮样式已移至 buttons.css */
+
+/* 卡片样式 */
+.card-container {
+    background-color: white;
+    border-radius: 0.5rem; /* rounded-lg */
+    border: 1px solid #e5e7eb; /* border border-gray-200 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .card-container {
+    background-color: #1f2937; /* dark:bg-gray-800 */
+    border-color: #374151; /* dark:border-gray-700 */
+}
+
+/* 名言卡片组件样式 */
+.quote-card-component {
+    margin-bottom: 1.5rem;
+    background-color: #ffffff; /* 移除渐变背景，使用纯白色 */
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: visible !important; /* 确保引号不被截断 */
+    transition: all 0.3s ease;
+}
+
+.dark-mode .quote-card-component {
+    background-color: #1f2937; /* 暗色模式使用纯深色背景 */
+    border-color: #374151;
+}
+
+.quote-card-component:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ffd300;
+}
+
+.dark-mode .quote-card-component:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    border-color: #ffd300;
+}
+
+/* 首页名言卡片特殊样式 */
+.quote-card.card-container {
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: visible !important; /* 确保引号不被截断 */
+    background-color: #ffffff; /* 移除渐变背景，使用纯白色 */
+    border-radius: 0.75rem;
+}
+
+.quote-card.card-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ffd300;
+}
+
+.dark-mode .quote-card.card-container {
+    border-color: #374151;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #1f2937; /* 暗色模式使用纯深色背景 */
+}
+
+.card-hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color) !important;
+    border-width: 2px !important;
+}
+
+.dark-mode .card-hover-effect:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* 首页名言卡片悬停效果 */
+.quote-card.card-container:hover {
+    border-color: #ffd300; /* 主色调黄色 */
+    border-width: 2px;
+}
+
+/* 引号样式 */
+.quote-marks {
+    position: relative;
+    overflow: visible !important; /* 确保引号不被截断 */
+}
+
+.quote-marks::before {
+    content: '"';
+    font-family: 'Noto Serif', serif;
+    position: absolute;
+    top: -15px; /* 向上移动，使引号更靠近卡片外部 */
+    left: -20px; /* 向左移动，使引号完全显示在卡片外部 */
+    font-size: 5rem;
+    color: var(--primary-color);
+    opacity: 0.2;
+    line-height: 1;
+    z-index: 10 !important; /* 增加z-index值，确保引号显示在最顶层 */
+    pointer-events: none; /* 确保引号不影响鼠标交互 */
+}
+
+/* 响应式调整已移至 responsive.css */
+
+/* 图片懒加载和失败处理样式 */
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.lazy.loaded {
+    opacity: 1;
+}
+
+.lazy.error {
+    opacity: 0.5;
+}
+
+/* 图片容器样式 */
+.img-container {
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-mode .img-container {
+    background-color: #333;
+}
+
+/* 图片加载中动画 */
+.img-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.dark-mode .img-loading {
+    background-color: #333;
+    color: #ccc;
+}
+
+.img-loading::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ddd;
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 图片失败后的默认显示 */
+.img-fallback {
+    position: relative;
+    overflow: hidden;
+}
+
+.img-fallback::after {
+    content: attr(data-fallback);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.dark-mode .img-fallback::after {
+    background-color: #333;
+    color: #ccc;
+}
+
+/* 头像失败显示 */
+.avatar-fallback {
+    border-radius: 50%;
+    font-size: 1.2rem;
+}
+
+/* 封面失败显示 */
+.cover-fallback {
+    border-radius: 8px;
+}
+
+/* 缩略图失败显示 */
+.thumbnail-fallback {
+    border-radius: 4px;
+}

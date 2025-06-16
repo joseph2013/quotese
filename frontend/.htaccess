@@ -1,0 +1,90 @@
+# 启用重写引擎
+RewriteEngine On
+
+# 设置基础路径（如果网站不在根目录，请修改）
+# RewriteBase /
+
+# 如果请求的不是真实文件或目录
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 首页重写规则
+RewriteRule ^$ index.html [L]
+RewriteRule ^home/?$ index.html [L]
+
+# 作者页面重写规则
+RewriteRule ^authors/?$ authors.html [L]
+RewriteRule ^authors/([^/]+)-([0-9]+)/?$ author.html?id=$2&name=$1 [L,QSA]
+
+# 类别页面重写规则
+RewriteRule ^categories/?$ categories.html [L]
+RewriteRule ^categories/([^/]+)-([0-9]+)/?$ category.html?id=$2&name=$1 [L,QSA]
+
+# 来源页面重写规则
+RewriteRule ^sources/?$ sources.html [L]
+RewriteRule ^sources/([^/]+)-([0-9]+)/?$ source.html?id=$2&name=$1 [L,QSA]
+
+# 名言详情页面重写规则
+RewriteRule ^quotes/([^/]+)-([0-9]+)/?$ quote.html?id=$2 [L,QSA]
+
+# 旧URL重定向到新URL
+# 重定向带有.html后缀的URL到不带后缀的URL
+RewriteCond %{THE_REQUEST} /index\.html [NC]
+RewriteRule ^index\.html$ / [R=301,L]
+
+RewriteCond %{THE_REQUEST} /authors\.html [NC]
+RewriteRule ^authors\.html$ /authors/ [R=301,L]
+
+RewriteCond %{THE_REQUEST} /categories\.html [NC]
+RewriteRule ^categories\.html$ /categories/ [R=301,L]
+
+RewriteCond %{THE_REQUEST} /sources\.html [NC]
+RewriteRule ^sources\.html$ /sources/ [R=301,L]
+
+# 重定向旧的查询参数格式到新的URL格式
+RewriteCond %{QUERY_STRING} ^id=([0-9]+)&name=([^&]+)$ [NC]
+RewriteRule ^author\.html$ /authors/%2-%1/? [R=301,L]
+
+RewriteCond %{QUERY_STRING} ^id=([0-9]+)&name=([^&]+)$ [NC]
+RewriteRule ^category\.html$ /categories/%2-%1/? [R=301,L]
+
+RewriteCond %{QUERY_STRING} ^id=([0-9]+)&name=([^&]+)$ [NC]
+RewriteRule ^source\.html$ /sources/%2-%1/? [R=301,L]
+
+RewriteCond %{QUERY_STRING} ^id=([0-9]+)$ [NC]
+RewriteRule ^quote\.html$ /quotes/quote-%1/? [R=301,L]
+
+# 添加尾部斜杠
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+RewriteRule ^(.*)$ $1/ [R=301,L]
+
+# 错误页面
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# 启用压缩
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule>
+
+# 设置缓存控制
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType text/html "access plus 1 day"
+</IfModule>
+
+# 禁止目录列表
+Options -Indexes
+
+# 设置默认字符集
+AddDefaultCharset UTF-8

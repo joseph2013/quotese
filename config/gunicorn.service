@@ -1,0 +1,31 @@
+[Unit]
+Description=Gunicorn daemon for Quotes Website
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/quotese/backend
+ExecStart=/var/www/quotese/venv/bin/gunicorn \
+          --access-logfile /var/log/gunicorn/access.log \
+          --error-logfile /var/log/gunicorn/error.log \
+          --workers 4 \
+          --worker-class=gevent \
+          --worker-connections=1000 \
+          --timeout 60 \
+          --bind unix:/var/www/quotese/gunicorn.sock \
+          --env DJANGO_SETTINGS_MODULE=quotes_admin.settings_prod \
+          quotes_admin.wsgi:application
+
+# 自动重启
+Restart=on-failure
+RestartSec=5s
+
+# 安全设置
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

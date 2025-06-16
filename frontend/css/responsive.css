@@ -1,0 +1,86 @@
+/* 响应式样式 */
+
+/* 移动设备 (小于 640px) */
+@media (max-width: 639px) {
+    .quote-marks::before {
+        font-size: 3rem;
+        left: -5px;
+    }
+    
+    .card-container {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* 平板设备 (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+    .quote-marks::before {
+        font-size: 4rem;
+        left: -8px;
+    }
+}
+
+/* 小型笔记本 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* 大型笔记本和桌面 (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* 大型显示器 (1280px 及以上) */
+@media (min-width: 1280px) {
+    .container {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    a {
+        text-decoration: none !important;
+        color: black !important;
+    }
+    
+    .container {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .card-container {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    .quote-card-component {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        background-image: none !important;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+}

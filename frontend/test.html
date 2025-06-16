@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - Quotes Collection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #FFD300;
+        }
+        .link-group {
+            margin-bottom: 30px;
+        }
+        .link-group h2 {
+            border-bottom: 2px solid #FFD300;
+            padding-bottom: 5px;
+        }
+        .link-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .link-item {
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        .link-item:hover {
+            background-color: #FFD300;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Quotes Website Test Page</h1>
+    <p>This page contains links to test the different pages of the website with sample data.</p>
+
+    <div class="link-group">
+        <h2>Main Pages</h2>
+        <div class="link-list">
+            <a href="index.html" class="link-item">Home Page</a>
+            <a href="category.html?name=inspiration" class="link-item">Category Page (Inspiration)</a>
+            <a href="category.html?name=life" class="link-item">Category Page (Life)</a>
+            <a href="author.html?name=Nelson%20Mandela" class="link-item">Author Page (Nelson Mandela)</a>
+            <a href="author.html?name=Albert%20Einstein" class="link-item">Author Page (Albert Einstein)</a>
+            <a href="source.html?name=Long%20Walk%20to%20Freedom" class="link-item">Source Page (Long Walk to Freedom)</a>
+            <a href="source.html?name=Interview" class="link-item">Source Page (Interview)</a>
+            <a href="quote.html?id=1" class="link-item">Quote Page (ID: 1)</a>
+            <a href="quote.html?id=2" class="link-item">Quote Page (ID: 2)</a>
+        </div>
+    </div>
+
+    <div class="link-group">
+        <h2>Error Pages</h2>
+        <div class="link-list">
+            <a href="404.html" class="link-item">404 Page</a>
+        </div>
+    </div>
+
+    <script>
+        // 检测URL处理器是否正常工作
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page loaded');
+            
+            // 创建URL处理器测试结果
+            const testResults = document.createElement('div');
+            testResults.innerHTML = `
+                <h2>URL Handler Test</h2>
+                <p>Current URL: ${window.location.href}</p>
+                <p>Query Parameters:</p>
+                <ul id="query-params"></ul>
+            `;
+            document.body.appendChild(testResults);
+            
+            // 显示查询参数
+            const queryParams = document.getElementById('query-params');
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.forEach((value, key) => {
+                const li = document.createElement('li');
+                li.textContent = `${key}: ${value}`;
+                queryParams.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>

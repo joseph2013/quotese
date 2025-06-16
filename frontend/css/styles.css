@@ -1,0 +1,258 @@
+/* 导入变量、动画、按钮样式和响应式样式 */
+@import 'variables.css';
+@import 'animations.css';
+@import 'buttons.css';
+@import 'responsive.css';
+
+/* 基础样式 */
+body {
+    font-family: 'Noto Sans', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif', serif;
+}
+
+/* 主题模式 */
+.light-mode {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+}
+
+.dark-mode {
+    background-color: var(--bg-dark);
+    color: white;
+}
+
+/* 渐变文本 */
+.gradient-text {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.dark-mode .gradient-text {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+/* 按钮样式已移至 buttons.css */
+
+/* 卡片样式 */
+.card-container {
+    background-color: white;
+    border-radius: 0.5rem; /* rounded-lg */
+    border: 1px solid #e5e7eb; /* border border-gray-200 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dark-mode .card-container {
+    background-color: #1f2937; /* dark:bg-gray-800 */
+    border-color: #374151; /* dark:border-gray-700 */
+}
+
+/* 名言卡片组件样式 */
+.quote-card-component {
+    margin-bottom: 1.5rem;
+    background-color: #ffffff; /* 移除渐变背景，使用纯白色 */
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: visible !important; /* 确保引号不被截断 */
+    transition: all 0.3s ease;
+}
+
+.dark-mode .quote-card-component {
+    background-color: #1f2937; /* 暗色模式使用纯深色背景 */
+    border-color: #374151;
+}
+
+.quote-card-component:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ffd300;
+}
+
+.dark-mode .quote-card-component:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    border-color: #ffd300;
+}
+
+/* 首页名言卡片特殊样式 */
+.quote-card.card-container {
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: visible !important; /* 确保引号不被截断 */
+    background-color: #ffffff; /* 移除渐变背景，使用纯白色 */
+    border-radius: 0.75rem;
+}
+
+.quote-card.card-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ffd300;
+}
+
+.dark-mode .quote-card.card-container {
+    border-color: #374151;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #1f2937; /* 暗色模式使用纯深色背景 */
+}
+
+.card-hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color) !important;
+    border-width: 2px !important;
+}
+
+.dark-mode .card-hover-effect:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* 首页名言卡片悬停效果 */
+.quote-card.card-container:hover {
+    border-color: #ffd300; /* 主色调黄色 */
+    border-width: 2px;
+}
+
+/* 引号样式 */
+.quote-marks {
+    position: relative;
+    overflow: visible !important; /* 确保引号不被截断 */
+}
+
+.quote-marks::before {
+    content: '"';
+    font-family: 'Noto Serif', serif;
+    position: absolute;
+    top: -15px; /* 向上移动，使引号更靠近卡片外部 */
+    left: -20px; /* 向左移动，使引号完全显示在卡片外部 */
+    font-size: 5rem;
+    color: var(--primary-color);
+    opacity: 0.2;
+    line-height: 1;
+    z-index: 10 !important; /* 增加z-index值，确保引号显示在最顶层 */
+    pointer-events: none; /* 确保引号不影响鼠标交互 */
+}
+
+/* 响应式调整已移至 responsive.css */
+
+/* 图片懒加载和失败处理样式 */
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.lazy.loaded {
+    opacity: 1;
+}
+
+.lazy.error {
+    opacity: 0.5;
+}
+
+/* 图片容器样式 */
+.img-container {
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dark-mode .img-container {
+    background-color: #333;
+}
+
+/* 图片加载中动画 */
+.img-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.dark-mode .img-loading {
+    background-color: #333;
+    color: #ccc;
+}
+
+.img-loading::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ddd;
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 图片失败后的默认显示 */
+.img-fallback {
+    position: relative;
+    overflow: hidden;
+}
+
+.img-fallback::after {
+    content: attr(data-fallback);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.dark-mode .img-fallback::after {
+    background-color: #333;
+    color: #ccc;
+}
+
+/* 头像失败显示 */
+.avatar-fallback {
+    border-radius: 50%;
+    font-size: 1.2rem;
+}
+
+/* 封面失败显示 */
+.cover-fallback {
+    border-radius: 8px;
+}
+
+/* 缩略图失败显示 */
+.thumbnail-fallback {
+    border-radius: 4px;
+}

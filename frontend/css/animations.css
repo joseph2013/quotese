@@ -1,0 +1,257 @@
+/* ======================================
+   动画效果 - 统一网站所有动画
+   ====================================== */
+
+/* 1. 淡入动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* 淡入延迟 - 统一所有页面的延迟时间 */
+.fade-in-delay-1 {
+    animation-delay: 0.2s;
+}
+
+.fade-in-delay-2 {
+    animation-delay: 0.4s;
+}
+
+.fade-in-delay-3 {
+    animation-delay: 0.6s;
+}
+
+/* 2. 脉冲动画 */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* 3. 光晕脉冲动画 */
+@keyframes pulseShadow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 211, 0, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 211, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 211, 0, 0);
+    }
+}
+
+.pulse-shadow {
+    animation: pulseShadow 2s infinite;
+}
+
+/* 4. 旋转动画 */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+/* 5. 悬停提升效果 */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 暗模式下的悬停效果 */
+.dark-mode .hover-lift:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* 6. 按钮悬停效果 */
+.btn-hover-effect {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn-hover-effect::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+    transform: translateY(100%);
+    transition: transform 0.3s;
+    z-index: -1;
+}
+
+.btn-hover-effect:hover::after {
+    transform: translateY(0);
+}
+
+/* 7. 卡片悬停效果 */
+.card-hover-effect {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color) !important;
+    border-width: 2px !important;
+}
+
+.dark-mode .card-hover-effect:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* 8. 标签悬停效果 */
+.tag {
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.tag:hover {
+    transform: scale(1.05);
+}
+
+.tag::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+}
+
+.tag:hover::after {
+    transform: translateX(0);
+}
+
+.dark-mode .tag::after {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 9. 加载动画 */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 211, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+/* 10. 图片懒加载效果 */
+.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-color: #f0f0f0;
+    min-height: 50px;
+    position: relative;
+}
+
+.lazy.loaded {
+    opacity: 1;
+    background-color: transparent;
+}
+
+.lazy.error {
+    opacity: 0.5;
+    background-color: #f8f8f8;
+}
+
+/* 加载中动画 */
+.lazy:not(.loaded):not(.error)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255, 211, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+/* 作者图片占位符 */
+.author-image-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.author-initial {
+    font-size: 1.5rem;
+}
+
+/* 封面图片占位符 */
+.cover-image-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    color: var(--text-secondary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.cover-placeholder i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.cover-placeholder span {
+    font-size: 0.875rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 响应式图片 */
+.responsive-lazy {
+    max-width: 100%;
+    height: auto;
+}

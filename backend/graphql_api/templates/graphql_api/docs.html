@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名言数据库 GraphQL API 文档</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .sidebar {
+            flex: 0 0 250px;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+        }
+        .content {
+            flex: 1;
+            min-width: 0;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+        .sidebar a:hover {
+            color: #3498db;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .api-endpoint {
+            background-color: #e8f4fc;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .method {
+            font-weight: bold;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h3>目录</h3>
+            <ul>
+                <li><a href="#introduction">简介</a></li>
+                <li><a href="#endpoints">API端点</a></li>
+                <li><a href="#authentication">认证</a></li>
+                <li><a href="#queries">查询操作</a>
+                    <ul>
+                        <li><a href="#query-quotes">名言查询</a></li>
+                        <li><a href="#query-authors">作者查询</a></li>
+                        <li><a href="#query-categories">类别查询</a></li>
+                        <li><a href="#query-sources">来源查询</a></li>
+                        <li><a href="#query-stats">统计查询</a></li>
+                    </ul>
+                </li>
+                <li><a href="#mutations">变更操作</a>
+                    <ul>
+                        <li><a href="#mutation-quotes">名言变更</a></li>
+                        <li><a href="#mutation-authors">作者变更</a></li>
+                        <li><a href="#mutation-categories">类别变更</a></li>
+                        <li><a href="#mutation-sources">来源变更</a></li>
+                    </ul>
+                </li>
+                <li><a href="#pagination">分页</a></li>
+                <li><a href="#filtering">过滤</a></li>
+                <li><a href="#error-handling">错误处理</a></li>
+                <li><a href="#client-integration">客户端集成</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h1>名言数据库 GraphQL API 文档</h1>
+            <div style="background-color: #e8f4fc; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                <p><strong>版本：</strong> v1.1.0</p>
+                <p><strong>更新日期：</strong> 2025年4月15日</p>
+                <p><strong>新增功能：</strong></p>
+                <ul>
+                    <li>添加了基于名称的筛选参数（author、category、source、content）</li>
+                    <li>添加了语言标识和筛选功能（language）</li>
+                    <li>增强了全文搜索功能</li>
+                </ul>
+            </div>
+
+            <section id="introduction">
+                <h2>简介</h2>
+                <p>名言数据库GraphQL API提供了对名言、作者、类别和来源数据的访问和管理功能。通过GraphQL，客户端可以精确指定需要的数据，减少网络请求和数据传输量。</p>
+                <p>本API适用于多种客户端应用，包括Web应用、移动应用和微信小程序。</p>
+            </section>
+
+            <section id="endpoints">
+                <h2>API端点</h2>
+                <div class="api-endpoint">
+                    <p><span class="method">GraphiQL界面:</span> <code>/graphql/</code></p>
+                    <p>提供交互式GraphQL查询界面，方便开发和测试。</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <p><span class="method">API端点:</span> <code>/api/</code></p>
+                    <p>生产环境使用的API端点，不包含GraphiQL界面。</p>
+                </div>
+
+                <div class="api-endpoint">
+                    <p><span class="method">API示例页面:</span> <code>/api-example/</code></p>
+                    <p>提供API使用示例和交互式测试界面。</p>
+                </div>
+            </section>
+
+            <section id="authentication">
+                <h2>认证</h2>
+                <p>API使用JWT（JSON Web Token）进行认证。查询操作不需要认证，但所有变更操作（创建、更新、删除）都需要认证。</p>
+
+                <h3>认证流程</h3>
+                <ol>
+                    <li>用户注册：使用 <code>/auth/register/</code> 端点创建新用户</li>
+                    <li>用户登录：使用 <code>/auth/login/</code> 端点获取访问令牌（access token）和刷新令牌（refresh token）</li>
+                    <li>使用访问令牌：在请求头中添加 <code>Authorization: Bearer &lt;access_token&gt;</code></li>
+                    <li>刷新令牌：当访问令牌过期时，使用 <code>/auth/login/refresh/</code> 端点获取新的访问令牌</li>
+                    <li>用户登出：使用 <code>/auth/logout/</code> 端点使当前令牌无效</li>
+                </ol>
+
+                <h3>用户注册</h3>
+                <pre><code>POST /auth/register/
+Content-Type: application/json
+
+{
+  "username": "example_user",
+  "email": "user@example.com",
+  "password": "secure_password",
+  "password2": "secure_password",
+  "first_name": "John",
+  "last_name": "Doe"
+}</code></pre>
+
+                <h3>用户登录</h3>
+                <pre><code>POST /auth/login/
+Content-Type: application/json
+
+{
+  "username": "example_user",
+  "password": "secure_password"
+}</code></pre>
+
+                <p>响应：</p>
+                <pre><code>{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+
+                <h3>刷新令牌</h3>
+                <pre><code>POST /auth/login/refresh/
+Content-Type: application/json
+
+{
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+
+                <h3>用户登出</h3>
+                <pre><code>POST /auth/logout/
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+
+{
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+}</code></pre>
+
+                <h3>在GraphQL请求中使用认证</h3>
+                <pre><code>POST /api/
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+
+{
+  "query": "mutation { createAuthor(input: { name: \"New Author\" }) { author { id name } } }"
+}</code></pre>
+            </section>
+
+            <section id="queries">
+                <h2>查询操作</h2>
+
+                <section id="query-quotes">
+                    <h3>名言查询</h3>
+                    <h4>获取所有名言</h4>
+                    <pre><code>query {
+  quotes {
+    id
+    content
+    author {
+      id
+      name
+    }
+    categories {
+      id
+      name
+    }
+    sources {
+      id
+      name
+    }
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>获取单个名言</h4>
+                    <pre><code>query {
+  quote(id: 1) {
+    id
+    content
+    author {
+      name
+    }
+    categories {
+      name
+    }
+    sources {
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>搜索名言</h4>
+                    <pre><code>query {
+  quotes(search: "future") {
+    id
+    content
+    author {
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>按作者筛选名言</h4>
+                    <pre><code>query {
+  quotes(authorId: 1) {
+    id
+    content
+    createdAt
+  }
+}</code></pre>
+
+                    <h4>按类别筛选名言</h4>
+                    <pre><code>query {
+  quotes(categoryId: 2) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>按来源筛选名言</h4>
+                    <pre><code>query {
+  quotes(sourceId: 3) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>按语言筛选名言</h4>
+                    <pre><code>query {
+  quotes(language: "en") {
+    id
+    content
+    author {
+      name
+    }
+    language
+  }
+}</code></pre>
+
+                    <p>注意：当前所有数据都是英文（language="en"），将来会添加中文数据（language="zh"）。</p>
+
+                    <h4>名言查询参数</h4>
+                    <table>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                        <tr>
+                            <td>search</td>
+                            <td>String</td>
+                            <td>全文搜索（内容、作者、类别、来源）</td>
+                        </tr>
+                        <tr>
+                            <td>content</td>
+                            <td>String</td>
+                            <td>按名言内容筛选</td>
+                        </tr>
+                        <tr>
+                            <td>author</td>
+                            <td>String</td>
+                            <td>按作者名称筛选（用户友好）</td>
+                        </tr>
+                        <tr>
+                            <td>category</td>
+                            <td>String</td>
+                            <td>按类别名称筛选（用户友好）</td>
+                        </tr>
+                        <tr>
+                            <td>source</td>
+                            <td>String</td>
+                            <td>按来源名称筛选（用户友好）</td>
+                        </tr>
+                        <tr>
+                            <td>language</td>
+                            <td>String</td>
+                            <td>按语言筛选（如 'en', 'zh'），当前所有数据都是英文</td>
+                        </tr>
+                        <tr>
+                            <td>authorId</td>
+                            <td>ID</td>
+                            <td>按作者ID筛选（系统内部）</td>
+                        </tr>
+                        <tr>
+                            <td>categoryId</td>
+                            <td>ID</td>
+                            <td>按类别ID筛选（系统内部）</td>
+                        </tr>
+                        <tr>
+                            <td>sourceId</td>
+                            <td>ID</td>
+                            <td>按来源ID筛选（系统内部）</td>
+                        </tr>
+                        <tr>
+                            <td>first</td>
+                            <td>Int</td>
+                            <td>返回结果数量（用于分页）</td>
+                        </tr>
+                        <tr>
+                            <td>skip</td>
+                            <td>Int</td>
+                            <td>跳过结果数量（用于分页）</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="query-authors">
+                    <h3>作者查询</h3>
+                    <h4>获取所有作者</h4>
+                    <pre><code>query {
+  authors {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>获取单个作者</h4>
+                    <pre><code>query {
+  author(id: 1) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>搜索作者</h4>
+                    <pre><code>query {
+  authors(first: 5) {
+    id
+    name
+  }
+}</code></pre>
+
+                    <h4>作者查询参数</h4>
+                    <table>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                        <tr>
+                            <td>search</td>
+                            <td>String</td>
+                            <td>搜索作者名称</td>
+                        </tr>
+                        <tr>
+                            <td>first</td>
+                            <td>Int</td>
+                            <td>返回结果数量</td>
+                        </tr>
+                        <tr>
+                            <td>skip</td>
+                            <td>Int</td>
+                            <td>跳过结果数量（用于分页）</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="query-categories">
+                    <h3>类别查询</h3>
+                    <h4>获取所有类别</h4>
+                    <pre><code>query {
+  categories {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>获取单个类别</h4>
+                    <pre><code>query {
+  category(id: 1) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>搜索类别</h4>
+                    <pre><code>query {
+  categories(first: 5) {
+    id
+    name
+  }
+}</code></pre>
+
+                    <h4>类别查询参数</h4>
+                    <table>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                        <tr>
+                            <td>search</td>
+                            <td>String</td>
+                            <td>搜索类别名称</td>
+                        </tr>
+                        <tr>
+                            <td>first</td>
+                            <td>Int</td>
+                            <td>返回结果数量</td>
+                        </tr>
+                        <tr>
+                            <td>skip</td>
+                            <td>Int</td>
+                            <td>跳过结果数量（用于分页）</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="query-sources">
+                    <h3>来源查询</h3>
+                    <h4>获取所有来源</h4>
+                    <pre><code>query {
+  sources {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>获取单个来源</h4>
+                    <pre><code>query {
+  source(id: 1) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}</code></pre>
+
+                    <h4>搜索来源</h4>
+                    <pre><code>query {
+  sources(first: 5) {
+    id
+    name
+  }
+}</code></pre>
+
+                    <h4>来源查询参数</h4>
+                    <table>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                        <tr>
+                            <td>search</td>
+                            <td>String</td>
+                            <td>搜索来源名称</td>
+                        </tr>
+                        <tr>
+                            <td>first</td>
+                            <td>Int</td>
+                            <td>返回结果数量</td>
+                        </tr>
+                        <tr>
+                            <td>skip</td>
+                            <td>Int</td>
+                            <td>跳过结果数量（用于分页）</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section id="query-stats">
+                    <h3>统计查询</h3>
+                    <h4>获取统计信息</h4>
+                    <pre><code>query {
+  authorsCount
+  categoriesCount
+  sourcesCount
+  quotesCount
+}</code></pre>
+                </section>
+            </section>
+
+            <section id="mutations">
+                <h2>变更操作</h2>
+
+                <section id="mutation-authors">
+                    <h3>作者变更</h3>
+                    <h4>创建作者</h4>
+                    <pre><code>mutation {
+  createAuthor(input: {
+    name: "新作者"
+  }) {
+    author {
+      id
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>更新作者</h4>
+                    <pre><code>mutation {
+  updateAuthor(id: 1, input: {
+    name: "更新后的作者名称"
+  }) {
+    author {
+      id
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>删除作者</h4>
+                    <pre><code>mutation {
+  deleteAuthor(id: 1) {
+    success
+  }
+}</code></pre>
+                </section>
+
+                <section id="mutation-categories">
+                    <h3>类别变更</h3>
+                    <h4>创建类别</h4>
+                    <pre><code>mutation {
+  createCategory(input: {
+    name: "新类别"
+  }) {
+    category {
+      id
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>更新类别</h4>
+                    <pre><code>mutation {
+  updateCategory(id: 1, input: {
+    name: "更新后的类别名称"
+  }) {
+    category {
+      id
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>删除类别</h4>
+                    <pre><code>mutation {
+  deleteCategory(id: 1) {
+    success
+  }
+}</code></pre>
+                </section>
+
+                <section id="mutation-sources">
+                    <h3>来源变更</h3>
+                    <h4>创建来源</h4>
+                    <pre><code>mutation {
+  createSource(input: {
+    name: "新来源"
+  }) {
+    source {
+      id
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>更新来源</h4>
+                    <pre><code>mutation {
+  updateSource(id: 1, input: {
+    name: "更新后的来源名称"
+  }) {
+    source {
+      id
+      name
+    }
+  }
+}</code></pre>
+
+                    <h4>删除来源</h4>
+                    <pre><code>mutation {
+  deleteSource(id: 1) {
+    success
+  }
+}</code></pre>
+                </section>
+
+                <section id="mutation-quotes">
+                    <h3>名言变更</h3>
+                    <h4>创建名言</h4>
+                    <pre><code>mutation {
+  createQuote(input: {
+    content: "这是一条新的名言。"
+    authorId: 1
+    categoryIds: [1, 2]
+    sourceIds: [3]
+    language: "en"  # 可选，默认为 'en'（英文）
+  }) {
+    quote {
+      id
+      content
+      author {
+        name
+      }
+      categories {
+        name
+      }
+      sources {
+        name
+      }
+      language
+    }
+  }
+}</code></pre>
+
+                    <h4>更新名言</h4>
+                    <pre><code>mutation {
+  updateQuote(id: 1, input: {
+    content: "更新后的名言内容。"
+    authorId: 2
+    categoryIds: [3, 4]
+    sourceIds: [1]
+    language: "zh"  # 可选，将英文名言更新为中文名言
+  }) {
+    quote {
+      id
+      content
+      author {
+        name
+      }
+      categories {
+        name
+      }
+      sources {
+        name
+      }
+      language
+    }
+  }
+}</code></pre>
+
+                    <h4>删除名言</h4>
+                    <pre><code>mutation {
+  deleteQuote(id: 1) {
+    success
+  }
+}</code></pre>
+
+                    <h4>名言输入参数</h4>
+                    <table>
+                        <tr>
+                            <th>参数</th>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                        <tr>
+                            <td>content</td>
+                            <td>String!</td>
+                            <td>名言内容（必填）</td>
+                        </tr>
+                        <tr>
+                            <td>authorId</td>
+                            <td>ID</td>
+                            <td>作者ID（可选）</td>
+                        </tr>
+                        <tr>
+                            <td>categoryIds</td>
+                            <td>[ID]</td>
+                            <td>类别ID列表（可选）</td>
+                        </tr>
+                        <tr>
+                            <td>sourceIds</td>
+                            <td>[ID]</td>
+                            <td>来源ID列表（可选）</td>
+                        </tr>
+                        <tr>
+                            <td>language</td>
+                            <td>String</td>
+                            <td>名言语言（如 'en', 'zh'），默认为 'en'（英文）</td>
+                        </tr>
+                    </table>
+                </section>
+            </section>
+
+            <section id="pagination">
+                <h2>分页</h2>
+                <p>API支持简单的偏移分页，使用<code>first</code>和<code>skip</code>参数：</p>
+                <pre><code>query {
+  quotes(first: 10, skip: 20) {
+    id
+    content
+    author {
+      name
+    }
+  }
+}</code></pre>
+                <p>这将返回从第21条开始的10条名言。</p>
+            </section>
+
+            <section id="filtering">
+                <h2>过滤</h2>
+                <p>API支持多种过滤方式：</p>
+                <ul>
+                    <li>使用<code>search</code>参数进行文本搜索</li>
+                    <li>使用<code>content</code>、<code>author</code>、<code>category</code>、<code>source</code>参数进行基于名称的过滤（用户友好）</li>
+                    <li>使用<code>authorId</code>、<code>categoryId</code>、<code>sourceId</code>等参数进行基于ID的过滤（系统内部）</li>
+                    <li>使用<code>language</code>参数进行语言过滤</li>
+                </ul>
+                <p>示例：</p>
+                <pre><code>query {
+  quotes(
+    search: "wisdom",
+    author: "Einstein",
+    language: "en"
+  ) {
+    id
+    content
+    language
+  }
+}</code></pre>
+                <p>这将返回内容包含"wisdom"，作者名称包含"Einstein"，且语言为英文的名言。</p>
+            </section>
+
+            <section id="error-handling">
+                <h2>错误处理</h2>
+                <p>GraphQL API会返回标准的GraphQL错误格式，包括错误消息和位置信息。</p>
+                <p>示例错误响应：</p>
+                <pre><code>{
+  "errors": [
+    {
+      "message": "找不到ID为999的作者",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "author"
+      ]
+    }
+  ],
+  "data": {
+    "author": null
+  }
+}</code></pre>
+            </section>
+
+            <section id="client-integration">
+                <h2>客户端集成</h2>
+
+                <h3>Web前端</h3>
+                <p>使用Apollo Client或Relay与GraphQL API集成：</p>
+                <pre><code>import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:8000/api/',
+  cache: new InMemoryCache()
+});
+
+client.query({
+  query: gql`
+    query {
+      quotes(first: 10) {
+        id
+        content
+        author {
+          name
+        }
+      }
+    }
+  `
+})
+.then(result => console.log(result));</code></pre>
+
+                <h3>移动应用</h3>
+                <p>使用Apollo iOS/Android或其他GraphQL客户端库与API集成。</p>
+
+                <h3>微信小程序</h3>
+                <p>在微信小程序中使用wx.request发送GraphQL请求：</p>
+                <pre><code>wx.request({
+  url: 'http://your-api-domain/api/',
+  method: 'POST',
+  data: {
+    query: `
+      query {
+        quotes(first: 10) {
+          id
+          content
+          author {
+            name
+          }
+        }
+      }
+    `
+  },
+  success(res) {
+    console.log(res.data)
+  }
+})</code></pre>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

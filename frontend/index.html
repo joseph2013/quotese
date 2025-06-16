@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Quotes Collection | Timeless Wisdom Platform - quotese.com</title>
+    <meta name="description" content="Explore classic quotes and wisdom from renowned figures worldwide, categorized by author, category, and source. Daily updates to inspire and motivate.">
+    <meta name="keywords" content="famous quotes, classic sayings, inspirational quotes, philosophical quotes, love quotes, life reflections, wisdom">
+    <link rel="canonical" href="https://quotese.com/">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Famous Quotes Collection | Timeless Wisdom Platform - quotese.com">
+    <meta property="og:description" content="Explore classic quotes and wisdom from renowned figures worldwide, categorized by author, category, and source. Daily updates to inspire and motivate.">
+    <meta property="og:image" content="https://quotese.com/images/og-image-home.jpg">
+    <meta property="og:url" content="https://quotese.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="quotese.com">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@quotesecom">
+    <meta name="twitter:title" content="Famous Quotes Collection | Timeless Wisdom Platform">
+    <meta name="twitter:description" content="Explore classic quotes and wisdom from renowned figures worldwide, categorized by author, category, and source. Daily updates to inspire and motivate.">
+    <meta name="twitter:image" content="https://quotese.com/images/og-image-home.jpg">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.staticfile.org/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&family=Noto+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Mermaid -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js"></script>
+    <!-- Custom CSS -->
+    <link href="css/variables.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/buttons.css" rel="stylesheet">
+    <link href="css/animations.css" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+
+    <!-- 强制覆盖样式 -->
+    <style>
+        /* 确保引号容器可见 */
+        #quotes-container {
+            overflow: visible !important;
+            padding-top: 0.5rem !important;
+        }
+
+        /* 减少卡片之间的间距 */
+        #quotes-container .space-y-6 {
+            margin-top: -0.5rem !important;
+        }
+
+        /* 优化Popular Authors模块样式 */
+        #authors-container li {
+            border-left: 3px solid transparent !important;
+            padding-left: 0.75rem !important;
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            margin-bottom: 0.25rem !important;
+            transition: all 0.2s ease-in-out !important;
+            min-height: 2.5rem !important;
+        }
+
+        #authors-container li:hover {
+            border-left-color: #FFD300 !important;
+            background-color: rgba(255, 211, 0, 0.05) !important;
+        }
+
+        .dark-mode #authors-container li:hover {
+            background-color: rgba(255, 211, 0, 0.1) !important;
+        }
+
+        #authors-container a, #sources-container a {
+            display: block !important;
+            width: 100% !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            hyphens: auto !important;
+            line-height: 1.3 !important;
+            max-height: 3.9em !important; /* 限制最大高度为3行文本 */
+            overflow: hidden !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 3 !important;
+            -webkit-box-orient: vertical !important;
+        }
+
+        /* 优化Popular Sources模块样式 */
+        #sources-container li {
+            border-left: 3px solid transparent !important;
+            padding-left: 0.75rem !important;
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            margin-bottom: 0.25rem !important;
+            transition: all 0.2s ease-in-out !important;
+            min-height: 2.5rem !important;
+        }
+
+        #sources-container li:hover {
+            border-left-color: #FFD300 !important;
+            background-color: rgba(255, 211, 0, 0.05) !important;
+        }
+
+        .dark-mode #sources-container li:hover {
+            background-color: rgba(255, 211, 0, 0.1) !important;
+        }
+
+        /* 优化Popular Categories模块样式 */
+        #categories-container {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 0.5rem !important;
+        }
+
+        #categories-container .tag {
+            margin-bottom: 0.25rem !important;
+            transition: all 0.2s ease-in-out !important;
+            border: 1px solid transparent !important;
+        }
+
+        #categories-container .tag:hover {
+            border-color: #FFD300 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .dark-mode #categories-container .tag:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* 优化右侧模块标题样式 */
+        .card-container h3 {
+            border-bottom: 2px solid #f3f4f6 !important;
+            padding-bottom: 0.75rem !important;
+            margin-bottom: 1rem !important;
+            position: relative !important;
+        }
+
+        .dark-mode .card-container h3 {
+            border-bottom-color: #374151 !important;
+        }
+
+        .card-container h3::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: -2px !important;
+            left: 0 !important;
+            width: 50px !important;
+            height: 2px !important;
+            background-color: #FFD300 !important;
+        }
+
+        /* 优化右侧模块卡片样式 */
+        .card-container {
+            border-radius: 0.75rem !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+            background-color: #ffffff !important;
+            border: 1px solid #e5e7eb !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .dark-mode .card-container {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* Hero Section卡片样式 */
+        .hero-quote-card {
+            background-image: linear-gradient(135deg, #fffbeb 0%, #fff8c4 25%, #fffef2 75%, #ffffff 100%) !important;
+            border-width: 1px !important;
+            border-color: #e5e7eb !important; /* 默认使用浅色边框 */
+            transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease !important;
+            box-shadow: 0 15px 30px -5px rgba(255, 211, 0, 0.2), 0 10px 15px -5px rgba(0, 0, 0, 0.05) !important;
+            transform: translateY(-3px) !important; /* 默认的微小上浮效果 */
+            position: relative !important;
+            overflow: visible !important;
+            cursor: pointer !important; /* 鼠标指针样式，提示卡片可点击 */
+        }
+
+        /* Hero Section卡片的引号样式 */
+        .hero-quote-card.quote-marks::before {
+            font-size: 8rem !important;
+            top: -20px !important; /* 向下移动，与普通卡片保持一致 */
+            left: -25px !important;
+            opacity: 0.5 !important;
+            color: #FFD300 !important;
+        }
+
+        .dark-mode .hero-quote-card {
+            background-image: linear-gradient(135deg, #1f2937 0%, #2d3748 25%, #1a202c 75%, #111827 100%) !important;
+            border-color: #374151 !important; /* 暗色模式下默认使用深色边框 */
+            box-shadow: 0 15px 30px -5px rgba(255, 211, 0, 0.2), 0 10px 15px -5px rgba(0, 0, 0, 0.3) !important;
+            transform: translateY(-3px) !important; /* 默认的微小上浮效果 */
+        }
+
+        .dark-mode .hero-quote-card.quote-marks::before {
+            opacity: 0.6 !important; /* 暗色模式下增加不透明度，使其更明显 */
+        }
+
+        /* 鼠标悬停时的黄色边框样式 */
+        .hero-quote-card:hover {
+            border-color: #FFD300 !important;
+            border-width: 2px !important;
+            box-shadow: 0 20px 35px -5px rgba(255, 211, 0, 0.25), 0 15px 20px -5px rgba(0, 0, 0, 0.07) !important;
+            transform: translateY(-6px) !important; /* 鼠标悬停时增加上浮效果 */
+        }
+
+        .dark-mode .hero-quote-card:hover {
+            border-color: #FFD300 !important;
+            border-width: 2px !important;
+            box-shadow: 0 20px 35px -5px rgba(255, 211, 0, 0.25), 0 15px 20px -5px rgba(0, 0, 0, 0.35) !important;
+            transform: translateY(-6px) !important; /* 鼠标悬停时增加上浮效果 */
+        }
+        /* 移除渐变背景，使用纯白色 */
+        .quote-card-component {
+            background-color: #ffffff !important;
+            background-image: none !important;
+        }
+
+        .dark-mode .quote-card-component {
+            background-color: #1f2937 !important;
+            background-image: none !important;
+        }
+
+        /* 引号样式调整 */
+        .quote-marks {
+            position: relative !important;
+            overflow: visible !important; /* 确保引号不被裁剪 */
+        }
+
+        .quote-marks::before {
+            content: '"' !important;
+            font-family: 'Noto Serif', serif !important;
+            position: absolute !important;
+            top: -15px !important; /* 向下移动，减少卡片间距 */
+            left: -10px !important; /* 向右移动，与卡片部分重叠 */
+            font-size: 6rem !important; /* 增大字体大小 */
+            color: #FFD300 !important; /* 使用主色调黄色 */
+            opacity: 0.4 !important; /* 进一步增加不透明度，使其更明显 */
+            line-height: 1 !important;
+            z-index: 10 !important; /* 使用更高的z-index确保在最顶层 */
+            pointer-events: none !important; /* 确保引号不影响点击事件 */
+        }
+
+        /* 确保卡片内边距生效且引号可见 */
+        .quote-card-component {
+            padding-left: 1.5rem !important; /* pl-6 */
+            overflow: visible !important; /* 确保引号不被裁剪 */
+            margin-top: 1.25rem !important; /* 减少上边距，减少卡片间距 */
+            margin-left: 0.75rem !important; /* 减少左边距，因为引号已向右移动 */
+            position: relative !important; /* 确保定位上下文正确 */
+        }
+
+        @media (min-width: 640px) {
+            .quote-card-component {
+                padding-left: 1.75rem !important; /* sm:pl-7 */
+                margin-top: 1.5rem !important; /* 减少上边距，减少卡片间距 */
+                margin-left: 1rem !important; /* 减少左边距，因为引号已向右移动 */
+            }
+
+            .quote-marks::before {
+                top: -20px !important; /* 向下移动，减少卡片间距 */
+                left: -20px !important; /* 向右移动，与卡片部分重叠 */
+                font-size: 7rem !important;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .quote-card-component {
+                padding-left: 2rem !important; /* md:pl-8 */
+                margin-top: 1.75rem !important; /* 减少上边距，减少卡片间距 */
+                margin-left: 1.25rem !important; /* 减少左边距，因为引号已向右移动 */
+            }
+
+            .quote-marks::before {
+                top: -25px !important; /* 向下移动，减少卡片间距 */
+                left: -25px !important; /* 向右移动，与卡片部分重叠 */
+                font-size: 8rem !important;
+            }
+        }
+    </style>
+    <!-- Google Analytics -->
+    <script src="js/analytics.js"></script>
+</head>
+<body class="light-mode">
+    <!-- 导航栏 (将由组件加载器加载) -->
+    <header id="navigation-container" role="banner"></header>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto px-4 py-8" role="main">
+        <!-- Hero Section -->
+        <section class="mb-12 text-center py-12 px-4" aria-labelledby="hero-heading">
+            <h1 id="hero-heading" class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 fade-in">
+                Discover <span style="color: #FFD300;">Timeless Wisdom</span>
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8 fade-in fade-in-delay-1">
+                Explore our collection of inspiring quotes from great minds throughout history.
+            </p>
+            <!-- 按钮已移除 -->
+            <div class="mt-12 relative max-w-4xl mx-auto">
+                <div class="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg opacity-10 blur-xl" aria-hidden="true"></div>
+                <figure class="relative p-8 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 quote-marks hero-quote-card" id="hero-quote-card">
+                    <blockquote>
+                        <p class="text-xl md:text-2xl lg:text-3xl italic mb-4 font-serif">"The greatest glory in living lies not in never falling, but in rising every time we fall."</p>
+                    </blockquote>
+                    <figcaption class="font-semibold text-yellow-600 dark:text-yellow-400 text-lg md:text-xl">Nelson Mandela</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Content Grid (Left-Right Layout) -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left Column (Quotes List) -->
+            <section class="lg:w-2/3">
+                <!-- Quotes List (Cards) -->
+                <div class="space-y-6" id="quotes-container" role="feed" aria-busy="true" aria-label="Famous quotes list">
+                    <!-- Loading spinner (will be replaced by quotes) -->
+                    <div class="flex justify-center py-12">
+                        <div class="loading-spinner" role="status">
+                            <span class="sr-only">Loading quotes...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination-container">
+                    <!-- Pagination component will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Right Column (Sidebar) -->
+            <aside class="lg:w-1/3" role="complementary" aria-label="Sidebar">
+                <div id="popular-topics-container">
+                    <!-- Popular topics component will be loaded here -->
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer (will be loaded by component loader) -->
+    <footer id="footer-container" role="contentinfo"></footer>
+
+    <!-- JavaScript -->
+    <!-- Debug Script -->
+    <script src="js/debug.js"></script>
+
+    <!-- Component Loader -->
+    <script src="js/component-loader.js"></script>
+
+    <!-- Configuration -->
+    <script src="js/config.js"></script>
+
+    <!-- Mock Data -->
+    <script src="js/mock-data.js"></script>
+
+    <!-- API Client -->
+    <script src="js/api-client.js"></script>
+
+    <!-- Core Modules -->
+    <script src="js/theme.js"></script>
+    <script src="js/url-handler.js"></script>
+    <script src="js/mobile-menu.js"></script>
+    <script src="js/components/pagination.js"></script>
+    <script src="js/components/quote-card.js"></script>
+    <script src="js/components/breadcrumb.js"></script>
+    <script src="js/social-meta.js"></script>
+
+    <!-- Global Fix Script -->
+    <script src="js/global-fix.js"></script>
+
+    <!-- Page Specific Script -->
+    <script src="js/pages/index.js"></script>
+</body>
+</html>

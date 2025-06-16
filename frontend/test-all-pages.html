@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All Pages - Quotes Collection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #FFD300;
+        }
+        .link-group {
+            margin-bottom: 30px;
+        }
+        .link-group h2 {
+            border-bottom: 2px solid #FFD300;
+            padding-bottom: 5px;
+        }
+        .link-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .link-item {
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        .link-item:hover {
+            background-color: #FFD300;
+            transform: translateY(-2px);
+        }
+        .test-frame {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .test-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .test-button {
+            background-color: #FFD300;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .test-button:hover {
+            background-color: #e6c000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quotes Website Test Page</h1>
+    <p>This page contains links to test the different pages of the website with sample data.</p>
+
+    <div class="link-group">
+        <h2>Main Pages</h2>
+        <div class="link-list">
+            <a href="index.html" class="link-item" target="test-frame">Home Page</a>
+            <a href="category.html?name=inspiration" class="link-item" target="test-frame">Category Page (Inspiration)</a>
+            <a href="category.html?name=life" class="link-item" target="test-frame">Category Page (Life)</a>
+            <a href="author.html?name=Nelson%20Mandela" class="link-item" target="test-frame">Author Page (Nelson Mandela)</a>
+            <a href="author.html?name=Albert%20Einstein" class="link-item" target="test-frame">Author Page (Albert Einstein)</a>
+            <a href="source.html?name=Long%20Walk%20to%20Freedom" class="link-item" target="test-frame">Source Page (Long Walk to Freedom)</a>
+            <a href="source.html?name=Interview" class="link-item" target="test-frame">Source Page (Interview)</a>
+            <a href="quote.html?id=1" class="link-item" target="test-frame">Quote Page (ID: 1)</a>
+            <a href="quote.html?id=2" class="link-item" target="test-frame">Quote Page (ID: 2)</a>
+        </div>
+    </div>
+
+    <div class="link-group">
+        <h2>Error Pages</h2>
+        <div class="link-list">
+            <a href="404.html" class="link-item" target="test-frame">404 Page</a>
+        </div>
+    </div>
+
+    <h2>Test Frame</h2>
+    <iframe name="test-frame" class="test-frame" src="index.html"></iframe>
+    
+    <div class="test-controls">
+        <button class="test-button" onclick="document.querySelector('.test-frame').contentWindow.location.reload()">Reload Frame</button>
+        <button class="test-button" onclick="window.open(document.querySelector('.test-frame').src, '_blank')">Open in New Tab</button>
+    </div>
+
+    <script>
+        // 记录页面加载时间
+        window.addEventListener('load', function() {
+            console.log('Test page loaded');
+        });
+    </script>
+</body>
+</html>

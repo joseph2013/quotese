@@ -1,0 +1,45 @@
+/**
+ * 网站配置
+ * 包含不同环境下的配置参数
+ */
+
+const Config = {
+    // 开发环境配置
+    development: {
+        apiEndpoint: 'http://127.0.0.1:8001/api/',
+        useMockData: false,
+        debug: true
+    },
+
+    // 测试环境配置
+    testing: {
+        apiEndpoint: 'http://test-server.example.com/api/',
+        useMockData: false,
+        debug: true
+    },
+
+    // 生产环境配置
+    production: {
+	apiEndpoint: 'http://43.153.11.77:8000/api/',
+        useMockData: false,
+        debug: false
+    },
+
+    // 获取当前环境配置
+    // 可以根据域名或其他条件判断当前环境
+    getCurrent: function() {
+
+	//const hostname = window.location.hostname;
+
+        //if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        //    return this.development;
+        //} else if (hostname.includes('test-server')) {
+        //    return this.testing;
+        //} else {
+            return this.production;
+        //}
+    }
+};
+
+// 导出当前环境配置
+window.AppConfig = Config.getCurrent();

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单API测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>简单API测试</h1>
+    <p>这个页面使用原生fetch API测试GraphQL端点。</p>
+
+    <div>
+        <label for="endpoint">API端点：</label>
+        <input type="text" id="endpoint" value="http://115.190.9.109:8000/api/" style="width: 300px;">
+    </div>
+
+    <div>
+        <button id="test-button">测试API</button>
+    </div>
+
+    <h2>请求：</h2>
+    <pre id="request"></pre>
+
+    <h2>响应：</h2>
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById('test-button').addEventListener('click', async function() {
+            const endpoint = document.getElementById('endpoint').value;
+            const query = `{ quotesCount }`;
+
+            const requestData = {
+                query: query
+            };
+
+            document.getElementById('request').textContent = JSON.stringify(requestData, null, 2);
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                    mode: 'cors'
+                });
+
+                const responseText = await response.text();
+
+                try {
+                    // 尝试解析为JSON
+                    const responseJson = JSON.parse(responseText);
+                    document.getElementById('response').textContent = JSON.stringify(responseJson, null, 2);
+                } catch (e) {
+                    // 如果不是JSON，直接显示文本
+                    document.getElementById('response').textContent = responseText;
+                }
+            } catch (error) {
+                document.getElementById('response').textContent = `错误：${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

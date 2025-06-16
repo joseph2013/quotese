@@ -1,0 +1,41 @@
+<nav class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <!-- Logo with link to homepage -->
+            <div class="flex items-center space-x-2">
+                <a href="index.html" class="flex items-center space-x-2 hover:opacity-90 transition-opacity">
+                    <i class="fas fa-quote-left text-yellow-500 text-2xl"></i>
+                    <h1 class="text-xl font-bold"><span class="text-yellow-500">quotes</span>e.com</h1>
+                </a>
+            </div>
+
+            <!-- Navigation (Hidden) -->
+            <div class="hidden md:flex space-x-6">
+                <!-- Navigation links have been hidden as requested -->
+            </div>
+
+            <!-- Search and Theme Toggle -->
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search quotes..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:bg-gray-800 dark:text-gray-100">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <!-- Theme toggle button has been hidden as requested -->
+                <button class="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800" id="mobile-menu-button">
+                    <i class="fas fa-bars text-gray-600 dark:text-gray-300"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+            <div class="relative mb-4">
+                <input type="text" placeholder="Search quotes..." class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:bg-gray-800 dark:text-gray-100">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+            <div class="flex flex-col space-y-3">
+                <!-- Mobile navigation links have been hidden as requested -->
+            </div>
+        </div>
+    </div>
+</nav>

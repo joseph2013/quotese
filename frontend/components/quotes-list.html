@@ -1,0 +1,17 @@
+<div class="quotes-list-component">
+    <h2 class="text-2xl font-bold mb-6 flex items-center">
+        <i class="fas fa-quote-right text-yellow-500 mr-2" aria-hidden="true"></i>
+        <span id="quotes-list-title">{{title}}</span>
+        <span id="quotes-count-display" class="ml-2 text-sm text-gray-500 dark:text-gray-400 font-normal"></span>
+    </h2>
+
+    <!-- Quotes List (Cards) -->
+    <div class="space-y-6" id="quotes-list" role="feed" aria-busy="true" aria-label="Quotes list">
+        <!-- Loading spinner (will be replaced by quotes) -->
+        <div class="flex justify-center py-12">
+            <div class="loading-spinner" role="status">
+                <span class="sr-only">Loading quotes...</span>
+            </div>
+        </div>
+    </div>
+</div>
